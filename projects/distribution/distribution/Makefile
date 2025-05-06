@@ -9,9 +9,6 @@ SOURCE_PATTERNS=./cmd/registry
 
 VERSION=$(shell git -C $(REPO) describe --match 'v[0-9]*' --dirty='.m' --always)
 REVISION=$(shell git -C $(REPO) rev-parse HEAD)$(shell if ! git -C $(REPO) diff --no-ext-diff --quiet --exit-code; then echo .m; fi)
-PKG=github.com/docker/distribution
-
-EXTRA_GO_LDFLAGS=-X $(PKG)/version.Version=$(VERSION) -X $(PKG)/version.Revision=$(REVISION) -X $(PKG)/version.Package=$(PKG)
 
 HAS_S3_ARTIFACTS=true
 EXCLUDE_FROM_STAGING_BUILDSPEC=true
