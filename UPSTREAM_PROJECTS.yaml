@@ -127,7 +127,7 @@ projects:
     repos:
       - name: distribution
         versions:
-          - tag: v2.8.3
+          - commit: 086d3c33b3981cf598d0d82336a907fcf5c4c848
             go_version: "1.24"
       - name: harbor
         versions:
@@ -251,12 +251,12 @@ projects:
     repos:
       - name: cloud-provider-nutanix
         versions:
-          - tag: v0.6.0
+          - tag: v0.5.5
             go_version: "1.24"
       - name: cluster-api-provider-nutanix
         versions:
-          - tag: v1.8.3
-            go_version: "1.24"
+          - tag: v1.6.1
+            go_version: "1.23"
   - org: opencontainers
     repos:
       - name: runc
