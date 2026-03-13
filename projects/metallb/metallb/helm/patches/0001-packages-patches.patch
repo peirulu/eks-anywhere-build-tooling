@@ -780,6 +780,32 @@ index 8c3dbf28..7d59f992 100644
    labels:
      {{- include "metallb.labels" . | nindent 4 }}
      app.kubernetes.io/component: speaker
+@@ -176,7 +176,7 @@ spec:
+       initContainers:
+         # Copies the initial config files with the right permissions to the shared volume.
+         - name: cp-frr-files
+-          image: {{ .Values.speaker.frr.image.repository }}:{{ .Values.speaker.frr.image.tag | default .Chart.AppVersion }}
++          image: {{ .Values.sourceRegistry }}/{{ .Values.speaker.frr.image.repository }}@{{ .Values.speaker.frr.image.digest }}
+           securityContext:
+             runAsUser: 100
+             runAsGroup: 101
+@@ -187,13 +187,13 @@ spec:
+               mountPath: /etc/frr
+         # Copies the reloader to the shared volume between the speaker and reloader.
+         - name: cp-reloader
+-          image: {{ .Values.speaker.image.repository }}:{{ .Values.speaker.image.tag | default .Chart.AppVersion }}
++          image: {{ .Values.sourceRegistry }}/{{ .Values.speaker.image.repository }}@{{ .Values.speaker.image.digest }}
+           command: ["/cp-tool","/frr-reloader.sh","/etc/frr_reloader/frr-reloader.sh"]
+           volumeMounts:
+             - name: reloader
+               mountPath: /etc/frr_reloader
+         # Copies the metrics exporter
+         - name: cp-metrics
+-          image: {{ .Values.speaker.image.repository }}:{{ .Values.speaker.image.tag | default .Chart.AppVersion }}
++          image: {{ .Values.sourceRegistry }}/{{ .Values.speaker.image.repository }}@{{ .Values.speaker.image.digest }}
+           command: ["/cp-tool","/frr-metrics","/etc/frr_metrics/frr-metrics"]
+           volumeMounts:
+             - name: metrics
 @@ -234,7 +234,7 @@ spec:
        {{- end }}
        containers:
@@ -789,6 +815,27 @@ index 8c3dbf28..7d59f992 100644
          {{- if .Values.speaker.image.pullPolicy }}
          imagePullPolicy: {{ .Values.speaker.image.pullPolicy }}
          {{- end }}
+@@ -302,7 +302,7 @@ spec:
+             - NET_BIND_SERVICE
+-        image: {{ .Values.speaker.frr.image.repository }}:{{ .Values.speaker.frr.image.tag | default .Chart.AppVersion }}
++        image: {{ .Values.sourceRegistry }}/{{ .Values.speaker.frr.image.repository }}@{{ .Values.speaker.frr.image.digest }}
+         {{- if .Values.speaker.frr.image.pullPolicy }}
+         imagePullPolicy: {{ .Values.speaker.frr.image.pullPolicy }}
+         {{- end }}
+@@ -338,7 +338,7 @@ spec:
+       - name: reloader
+-        image: {{ .Values.speaker.frr.image.repository }}:{{ .Values.speaker.frr.image.tag | default .Chart.AppVersion }}
++        image: {{ .Values.sourceRegistry }}/{{ .Values.speaker.frr.image.repository }}@{{ .Values.speaker.frr.image.digest }}
+         {{- if .Values.speaker.frr.image.pullPolicy }}
+         imagePullPolicy: {{ .Values.speaker.frr.image.pullPolicy }}
+         {{- end }}
+@@ -354,7 +354,7 @@ spec:
+       - name: frr-metrics
+-        image: {{ .Values.speaker.frr.image.repository }}:{{ .Values.speaker.frr.image.tag | default .Chart.AppVersion }}
++        image: {{ .Values.sourceRegistry }}/{{ .Values.speaker.frr.image.repository }}@{{ .Values.speaker.frr.image.digest }}
+         command: ["/etc/frr_metrics/frr-metrics"]
+         args:
+           - --metrics-port={{ .Values.speaker.frr.metricsPort }}
 diff --git a/charts/metallb/templates/webhooks.yaml b/charts/metallb/templates/webhooks.yaml
 index e708beea..2fee46dd 100644
 --- a/charts/metallb/templates/webhooks.yaml
@@ -937,15 +984,18 @@ index fc6e0b23..4417b543 100644
      pullPolicy:
    ## @param speaker.updateStrategy.type Speaker daemonset strategy type
    ## ref: https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/
-@@ -333,7 +343,7 @@ speaker:
+@@ -333,9 +343,9 @@ speaker:
    # frr contains configuration specific to the MetalLB FRR container,
    # for speaker running alongside FRR.
    frr:
 -    enabled: true
 +    enabled: false
      image:
-       repository: quay.io/frrouting/frr
-       tag: 9.1.0
+-      repository: quay.io/frrouting/frr
+-      tag: 9.1.0
++      repository: metallb/frr
++      digest: {{metallb/frr}}
+       pullPolicy:
 @@ -355,7 +365,7 @@ speaker:
    extraContainers: []
  

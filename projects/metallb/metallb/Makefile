@@ -17,7 +17,7 @@ DOCKERFILE_FOLDER=./docker/linux/$(IMAGE_NAME)
 
 HAS_HELM_CHART=true
 HELM_DIRECTORY=charts/metallb
-HELM_IMAGE_LIST=metallb/controller metallb/speaker
+HELM_IMAGE_LIST=metallb/controller metallb/speaker metallb/frr
 
 HELM_CHART_NAMES=metallb/crds metallb/metallb
 

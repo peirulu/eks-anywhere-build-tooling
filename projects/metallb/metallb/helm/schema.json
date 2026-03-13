@@ -460,6 +460,31 @@
             },
             "secretName": {
               "type": "string"
+            },
+            "frr": {
+              "description": "Install FRR container in speaker deployment",
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "image": { "$ref": "#/definitions/component/properties/image" },
+                "metricsPort": { "type": "integer" },
+                "resources": { "type": "object" }
+              },
+              "required": [ "enabled" ]
+            },
+            "reloader": {
+              "type": "object",
+              "properties": {
+                "resources": { "type": "object" }
+              }
+            },
+            "frrMetrics": {
+              "type": "object",
+              "properties": {
+                "resources": { "type": "object" }
+              }
             }
           },
           "required": []
