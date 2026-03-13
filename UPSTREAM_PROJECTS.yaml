@@ -123,6 +123,12 @@ projects:
         versions:
           - tag: v1.7.4
             go_version: "1.25"
+  - org: frrouting
+    repos:
+      - name: frr
+        versions:
+          - tag: frr-9.1.0
+            go_version: N/A
   - org: goharbor
     repos:
       - name: distribution
