@@ -22,11 +22,11 @@ Subject: [PATCH] packages patches
  charts/metallb/templates/secret.yaml          |  16 +++++++++++++
  .../metallb/templates/service-accounts.yaml   |   4 ++--
  charts/metallb/templates/servicemonitor.yaml  |  14 +++++------
- charts/metallb/templates/speaker.yaml         |   6 ++---
+ charts/metallb/templates/speaker.yaml         |  18 +++++++--------
  charts/metallb/templates/webhooks.yaml        |  16 ++++++-------
  charts/metallb/values.schema.json             |  12 ++++++----
- charts/metallb/values.yaml                    |  22 +++++++++++++-----
- 22 files changed, 137 insertions(+), 49 deletions(-)
+ charts/metallb/values.yaml                    |  26 ++++++++++++++------
+ 22 files changed, 149 insertions(+), 55 deletions(-)
  rename charts/{metallb/charts => }/crds/.helmignore (100%)
  rename charts/{metallb/charts => }/crds/Chart.yaml (100%)
  rename charts/{metallb/charts => }/crds/README.md (100%)
@@ -937,15 +937,6 @@ index fc6e0b23..4417b543 100644
      pullPolicy:
    ## @param speaker.updateStrategy.type Speaker daemonset strategy type
    ## ref: https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/
-@@ -333,7 +343,7 @@ speaker:
-   # frr contains configuration specific to the MetalLB FRR container,
-   # for speaker running alongside FRR.
-   frr:
--    enabled: true
-+    enabled: false
-     image:
-       repository: quay.io/frrouting/frr
-       tag: 9.1.0
 @@ -355,7 +365,7 @@ speaker:
    extraContainers: []
  
